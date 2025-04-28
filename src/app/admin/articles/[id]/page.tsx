@@ -5,27 +5,26 @@ import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
 export default function EditArticlePage() {
-  const { id } = useParams(); // Menggunakan useParams untuk mengambil id
+  const { id } = useParams();
   const router = useRouter();
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [categoryId, setCategoryId] = useState("");
 
   useEffect(() => {
-    if (!id) return; // Pastikan id ada sebelum mengambil artikel
+    if (!id) return;
     async function loadArticle() {
-      // Pastikan id adalah string sebelum dipakai
-      const data = await fetchArticleById(id as string); // Type assertion untuk memastikan id sebagai string
+      const data = await fetchArticleById(id as string);
       setTitle(data.title);
       setContent(data.content);
       setCategoryId(data.categoryId);
     }
     loadArticle();
-  }, [id]); // Menjalankan efek ini saat id berubah
+  }, [id]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!id) return; // Jangan kirim jika id kosong
+    if (!id) return;
     await updateArticle(id as string, { title, content, categoryId });
     router.push("/admin/articles");
   };
