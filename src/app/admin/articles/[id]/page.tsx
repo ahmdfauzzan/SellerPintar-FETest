@@ -4,11 +4,11 @@ import { fetchArticleById, updateArticle } from "@/lib/articlesApi";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
-export default function EditArticlePage({
-  params,
-}: {
+type PageProps = {
   params: { id: string };
-}) {
+};
+
+export default function EditArticlePage({ params }: PageProps) {
   const router = useRouter();
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
