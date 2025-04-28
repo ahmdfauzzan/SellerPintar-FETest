@@ -188,12 +188,12 @@ export default function ArticlePage() {
                       </h3>
 
                       <div className="mt-3 flex flex-wrap gap-2">
-                        <span className="text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded">
+                        <span className="text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded-full">
                           {article.category.name}
                         </span>
                       </div>
 
-                      <p className="mt-auto text-sm text-gray-700">
+                      <p className="mt-3 text-sm text-gray-700">
                         By {article.user.username}
                       </p>
                     </div>
