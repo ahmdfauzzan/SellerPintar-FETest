@@ -1,10 +1,11 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { fetchArticleById, fetchArticles } from "@/lib/articlesApi";
 import Image from "next/image";
 import Link from "next/link";
+import { IoArrowBack } from "react-icons/io5";
 
 interface Article {
   id: string;
@@ -23,6 +24,7 @@ interface Article {
 
 export default function ArticlePreviewPage() {
   const { id } = useParams();
+  const router = useRouter();
   const [article, setArticle] = useState<Article | null>(null);
   const [otherArticles, setOtherArticles] = useState<Article[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
@@ -65,17 +67,22 @@ export default function ArticlePreviewPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-900 p-8">
-      <div className="bg-white rounded-lg shadow p-6 max-w-5xl mx-auto">
+    <div className="min-h-screen p-8 bg-white">
+      <div className="max-w-5xl mx-auto">
         {/* Header */}
-        <div className="flex justify-between items-center mb-8">
-          <h1 className="text-2xl font-bold text-gray-800">Preview Articles</h1>
-          <Link
-            href="/admin/articles"
-            className="bg-blue-600 hover:bg-blue-500 text-white px-4 py-2 rounded-lg"
-          >
-            Ready to Check
-          </Link>
+        <div className="flex items-center justify-between mb-8">
+          <div className="flex items-center space-x-2">
+            <button
+              type="button"
+              onClick={() => router.back()}
+              className="text-gray-600 hover:text-gray-800"
+            >
+              <IoArrowBack size={24} />
+            </button>
+            <h1 className="text-2xl font-bold text-gray-800">
+              Preview Articles
+            </h1>
+          </div>
         </div>
 
         {/* Article Content */}
@@ -109,7 +116,7 @@ export default function ArticlePreviewPage() {
                 .filter((other) => other.id !== article.id)
                 .map((other) => (
                   <Link key={other.id} href={`/articles/${other.id}`}>
-                    <div className="border rounded-lg overflow-hidden shadow hover:shadow-lg transition cursor-pointer flex flex-col">
+                    <div className="flex flex-col h-full border rounded-lg overflow-hidden shadow hover:shadow-lg transition cursor-pointer">
                       <div className="relative w-full aspect-[4/3] bg-gray-100">
                         {other.imageUrl ? (
                           <Image
@@ -139,9 +146,11 @@ export default function ArticlePreviewPage() {
                           </span>
                         </div>
 
-                        <p className="mt-auto text-sm text-gray-700">
-                          By {other.user.username}
-                        </p>
+                        <div className="mt-auto pt-4">
+                          <p className="text-sm text-gray-700">
+                            By {other.user.username}
+                          </p>
+                        </div>
                       </div>
                     </div>
                   </Link>
