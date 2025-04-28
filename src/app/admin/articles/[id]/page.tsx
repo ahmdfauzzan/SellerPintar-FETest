@@ -1,32 +1,32 @@
 "use client";
 
 import { fetchArticleById, updateArticle } from "@/lib/articlesApi";
-import { useRouter } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
-type PageProps = {
-  params: { id: string };
-};
-
-export default function EditArticlePage({ params }: PageProps) {
+export default function EditArticlePage() {
+  const { id } = useParams(); // Menggunakan useParams untuk mengambil id
   const router = useRouter();
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [categoryId, setCategoryId] = useState("");
 
   useEffect(() => {
+    if (!id) return; // Pastikan id ada sebelum mengambil artikel
     async function loadArticle() {
-      const data = await fetchArticleById(params.id);
+      // Pastikan id adalah string sebelum dipakai
+      const data = await fetchArticleById(id as string); // Type assertion untuk memastikan id sebagai string
       setTitle(data.title);
       setContent(data.content);
       setCategoryId(data.categoryId);
     }
     loadArticle();
-  }, [params.id]);
+  }, [id]); // Menjalankan efek ini saat id berubah
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    await updateArticle(params.id, { title, content, categoryId });
+    if (!id) return; // Jangan kirim jika id kosong
+    await updateArticle(id as string, { title, content, categoryId });
     router.push("/admin/articles");
   };
 
