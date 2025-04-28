@@ -5,6 +5,8 @@ import { createArticle } from "@/lib/articlesApi";
 import { fetchCategories } from "@/lib/categoriesApi";
 import { useRouter } from "next/navigation";
 import { IoArrowBack } from "react-icons/io5";
+import instance from "@/lib/axios";
+import Image from "next/image";
 
 type Category = {
   id: string;
@@ -18,6 +20,8 @@ export default function CreateArticlePage() {
   const [categoryId, setCategoryId] = useState("");
   const [categories, setCategories] = useState<Category[]>([]);
   const [error, setError] = useState("");
+  const [thumbnailFile, setThumbnailFile] = useState<File | null>(null);
+  const [thumbnailPreview, setThumbnailPreview] = useState<string | null>(null);
 
   useEffect(() => {
     const loadCategories = async () => {
@@ -27,16 +31,46 @@ export default function CreateArticlePage() {
     loadCategories();
   }, []);
 
+  const handleThumbnailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      setThumbnailFile(file);
+      setThumbnailPreview(URL.createObjectURL(file));
+    }
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!title || !content || !categoryId) {
+    if (!title || !content || !categoryId || !thumbnailFile) {
       setError("All fields are required");
       return;
     }
 
-    setError(""); // Clear error sebelum submit
-    await createArticle({ title, content, categoryId });
-    router.push("/admin/articles");
+    try {
+      setError("");
+
+      const formData = new FormData();
+      formData.append("image", thumbnailFile);
+
+      const uploadRes = await instance.post("/upload", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+
+      const imageUrl = uploadRes.data.imageUrl;
+
+      if (imageUrl) {
+        // Create article dengan imageUrl yang sudah didapat
+        await createArticle({ title, content, categoryId, imageUrl });
+        router.push("/admin/articles");
+      } else {
+        setError("Failed to upload image.");
+      }
+    } catch (err) {
+      console.error(err);
+      setError("Failed to create article");
+    }
   };
 
   return (
@@ -54,6 +88,41 @@ export default function CreateArticlePage() {
           <IoArrowBack size={24} />
         </button>
         <h2 className="text-2xl font-bold">Create Articles</h2>
+      </div>
+
+      {/* Thumbnail upload */}
+      <div>
+        <label className="block mb-1 font-semibold">Thumbnails</label>
+        <div className="border-2 border-dashed border-gray-300 p-4 rounded-lg text-center cursor-pointer hover:border-blue-400">
+          <input
+            type="file"
+            accept="image/png, image/jpeg"
+            onChange={handleThumbnailChange}
+            className="hidden"
+            id="thumbnailInput"
+          />
+          <label htmlFor="thumbnailInput" className="cursor-pointer">
+            {thumbnailPreview ? (
+              <Image
+                src={thumbnailPreview}
+                alt="Thumbnail Preview"
+                width={300}
+                height={200}
+                className="mx-auto max-h-40 object-contain"
+              />
+            ) : (
+              <div>
+                <p className="text-gray-500">Click to select files</p>
+                <p className="text-gray-400 text-sm">
+                  Support file type: jpg or png
+                </p>
+              </div>
+            )}
+          </label>
+        </div>
+        {!thumbnailFile && (
+          <p className="text-red-500 text-sm mt-1">Please enter picture</p>
+        )}
       </div>
 
       {/* Title input */}

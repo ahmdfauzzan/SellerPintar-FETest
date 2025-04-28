@@ -3,7 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import logo from "@/assets/img/logoipsum.png";
+import logo from "@/assets/img/logoputih.png";
 import nookies from "nookies"; // Import nookies for cookie management
 
 const Sidebar = () => {
