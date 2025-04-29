@@ -6,6 +6,7 @@ import { usePathname } from "next/navigation";
 import logo from "@/assets/img/logoputih.png";
 import nookies from "nookies";
 import { useState } from "react";
+import { FileText, Tag, LogOut } from "lucide-react"; // Import ikon dari lucide-react
 
 const Sidebar = () => {
   const pathname = usePathname();
@@ -26,28 +27,31 @@ const Sidebar = () => {
         <nav className="flex flex-col gap-2 p-4">
           <Link
             href="/admin/articles"
-            className={`p-2 rounded ${
+            className={`p-2 rounded flex items-center gap-2 ${
               pathname.startsWith("/admin/articles") ? "bg-blue-900" : ""
             }`}
           >
+            <FileText className="w-5 h-5" />
             Articles
           </Link>
 
           <Link
             href="/admin/categories"
-            className={`p-2 rounded ${
+            className={`p-2 rounded flex items-center gap-2 ${
               pathname.startsWith("/admin/categories") ? "bg-blue-900" : ""
             }`}
           >
+            <Tag className="w-5 h-5" />
             Categories
           </Link>
 
           <button
             onClick={() => setShowLogoutConfirm(true)}
-            className={`p-2 text-left rounded w-full ${
+            className={`p-2 text-left rounded w-full flex items-center gap-2 ${
               pathname.startsWith("/logout") ? "bg-blue-900" : ""
             }`}
           >
+            <LogOut className="w-5 h-5" />
             Logout
           </button>
         </nav>

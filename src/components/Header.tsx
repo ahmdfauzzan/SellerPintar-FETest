@@ -110,7 +110,7 @@ const Header: React.FC<HeaderProps> = ({ className }) => {
               </Link>
               <button
                 onClick={() => setShowLogoutConfirm(true)}
-                className="block w-full px-4 py-2 text-gray-700 text-left hover:bg-gray-100"
+                className="block w-full px-4 py-2 text-red-500 text-left hover:bg-gray-100"
               >
                 Logout
               </button>
@@ -130,7 +130,7 @@ const Header: React.FC<HeaderProps> = ({ className }) => {
                   Cancel
                 </button>
                 <button
-                  className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
+                  className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 "
                   onClick={() => {
                     nookies.destroy(null, "token");
                     window.location.href = "/login";

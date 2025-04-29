@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import { createArticle } from "@/lib/articlesApi";
 import { fetchCategories } from "@/lib/categoriesApi";
 import { useRouter } from "next/navigation";
-import { IoArrowBack } from "react-icons/io5";
+import { ArrowLeft } from "lucide-react";
 import instance from "@/lib/axios";
 import Image from "next/image";
 
@@ -85,7 +85,7 @@ export default function CreateArticlePage() {
           onClick={() => router.back()}
           className="text-gray-600 hover:text-gray-800"
         >
-          <IoArrowBack size={24} />
+          <ArrowLeft size={30} />
         </button>
         <h2 className="text-2xl font-bold">Create Articles</h2>
       </div>

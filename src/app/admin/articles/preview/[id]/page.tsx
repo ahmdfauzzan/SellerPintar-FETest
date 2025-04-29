@@ -5,7 +5,7 @@ import { useParams, useRouter } from "next/navigation";
 import { fetchArticleById, fetchArticles } from "@/lib/articlesApi";
 import Image from "next/image";
 import Link from "next/link";
-import { IoArrowBack } from "react-icons/io5";
+import { ArrowLeft } from "lucide-react";
 
 interface Article {
   id: string;
@@ -77,7 +77,7 @@ export default function ArticlePreviewPage() {
               onClick={() => router.back()}
               className="text-gray-600 hover:text-gray-800"
             >
-              <IoArrowBack size={24} />
+              <ArrowLeft size={30} />
             </button>
             <h1 className="text-2xl font-bold text-gray-800">
               Preview Articles
