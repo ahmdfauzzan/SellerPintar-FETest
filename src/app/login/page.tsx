@@ -82,12 +82,11 @@ export default function LoginPage() {
             <label className="text-sm font-medium">Password</label>
             <div className="relative flex items-center">
               <input
-                type={showPassword ? "text" : "password"} // Toggle between text and password
+                type={showPassword ? "text" : "password"}
                 {...register("password")}
                 placeholder="Input password"
                 className="w-full mt-1 px-3 py-2 border rounded text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
-              {/* Toggle button for visibility */}
               <button
                 type="button"
                 onClick={() => setShowPassword(!showPassword)}
@@ -95,12 +94,12 @@ export default function LoginPage() {
               >
                 {showPassword ? <FiEyeOff size={20} /> : <FiEye size={20} />}
               </button>
-              {errors.password && (
-                <p className="text-sm text-red-500">
-                  {errors.password.message}
-                </p>
-              )}
             </div>
+            {errors.password && (
+              <p className="text-sm text-red-500 mt-1">
+                {errors.password.message}
+              </p>
+            )}
           </div>
 
           <button
