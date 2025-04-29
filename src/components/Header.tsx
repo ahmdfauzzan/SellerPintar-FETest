@@ -12,9 +12,10 @@ interface HeaderProps {
 const Header: React.FC<HeaderProps> = ({ className }) => {
   const [username, setUsername] = useState<string | null>(null);
   const [profilePicture, setProfilePicture] = useState<string | null>(null);
-  const [role, setRole] = useState<string | null>(null); // 👈 Tambah state role
+  const [role, setRole] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [dropdownOpen, setDropdownOpen] = useState<boolean>(false);
+  const [showLogoutConfirm, setShowLogoutConfirm] = useState(false);
 
   useEffect(() => {
     const fetchUserProfile = async () => {
@@ -31,7 +32,7 @@ const Header: React.FC<HeaderProps> = ({ className }) => {
 
           setUsername(response.data.username);
           setProfilePicture(response.data.profile_picture);
-          setRole(response.data.role); // 👈 Simpan role dari API
+          setRole(response.data.role);
         }
       } catch (error) {
         console.error("Error fetching profile:", error);
@@ -43,10 +44,10 @@ const Header: React.FC<HeaderProps> = ({ className }) => {
     fetchUserProfile();
   }, []);
 
-  const handleLogout = () => {
-    nookies.destroy(null, "token");
-    window.location.href = "/login";
-  };
+  // const handleLogout = () => {
+  //   nookies.destroy(null, "token");
+  //   window.location.href = "/login";
+  // };
 
   return (
     <div className={`w-full ${className}`}>
@@ -108,7 +109,7 @@ const Header: React.FC<HeaderProps> = ({ className }) => {
                 </div>
               </Link>
               <button
-                onClick={handleLogout}
+                onClick={() => setShowLogoutConfirm(true)}
                 className="block w-full px-4 py-2 text-gray-700 text-left hover:bg-gray-100"
               >
                 Logout
@@ -116,6 +117,31 @@ const Header: React.FC<HeaderProps> = ({ className }) => {
             </div>
           )}
         </div>
+        {showLogoutConfirm && (
+          <div className="fixed inset-0 flex items-center justify-center z-30 bg-opacity-50">
+            <div className="bg-white rounded-lg shadow-lg p-6 w-80">
+              <h2 className="text-lg font-bold mb-2">Logout</h2>
+              <p className="text-sm mb-4">Are you sure want to logout?</p>
+              <div className="flex justify-end gap-2">
+                <button
+                  className="px-4 py-2 bg-gray-200 rounded hover:bg-gray-300"
+                  onClick={() => setShowLogoutConfirm(false)}
+                >
+                  Cancel
+                </button>
+                <button
+                  className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
+                  onClick={() => {
+                    nookies.destroy(null, "token");
+                    window.location.href = "/login";
+                  }}
+                >
+                  Logout
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );
