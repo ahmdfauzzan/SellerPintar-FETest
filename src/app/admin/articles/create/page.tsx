@@ -41,7 +41,7 @@ export default function CreateArticlePage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!title || !content || !categoryId || !thumbnailFile) {
+    if (!title || !content || !categoryId) {
       setError("All fields are required");
       return;
     }
@@ -49,24 +49,25 @@ export default function CreateArticlePage() {
     try {
       setError("");
 
-      const formData = new FormData();
-      formData.append("image", thumbnailFile);
+      let imageUrl: string | undefined;
 
-      const uploadRes = await instance.post("/upload", formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      });
+      if (thumbnailFile) {
+        const formData = new FormData();
+        formData.append("image", thumbnailFile);
 
-      const imageUrl = uploadRes.data.imageUrl;
+        const uploadRes = await instance.post("/upload", formData, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        });
 
-      if (imageUrl) {
-        // Create article dengan imageUrl yang sudah didapat
-        await createArticle({ title, content, categoryId, imageUrl });
-        router.push("/admin/articles");
-      } else {
-        setError("Failed to upload image.");
+        imageUrl = uploadRes.data.imageUrl;
       }
+
+      // Kirim request createArticle dengan atau tanpa imageUrl
+      await createArticle({ title, content, categoryId, imageUrl });
+
+      router.push("/admin/articles");
     } catch (err) {
       console.error(err);
       setError("Failed to create article");
@@ -120,9 +121,6 @@ export default function CreateArticlePage() {
             )}
           </label>
         </div>
-        {!thumbnailFile && (
-          <p className="text-red-500 text-sm mt-1">Please enter picture</p>
-        )}
       </div>
 
       {/* Title input */}
