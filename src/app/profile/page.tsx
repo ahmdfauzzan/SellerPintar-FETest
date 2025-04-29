@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from "react";
 import axios from "@/lib/axios";
-import nookies from "nookies";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { useRouter } from "next/navigation";
@@ -22,18 +21,8 @@ export default function ProfilePage() {
   useEffect(() => {
     const fetchProfile = async () => {
       try {
-        const cookies = nookies.get(null);
-        const token = cookies.token;
-
-        if (token) {
-          const response = await axios.get("/auth/profile", {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          });
-
-          setProfile(response.data);
-        }
+        const response = await axios.get("/auth/profile");
+        setProfile(response.data);
       } catch (error) {
         console.error("Error fetching profile:", error);
       } finally {

@@ -39,7 +39,15 @@ export default function LoginPage() {
 
       if (token) {
         nookies.set(null, "token", token, { path: "/" });
-        router.push("/articles");
+
+        const profileRes = await axios.get("/auth/profile");
+        const profile = profileRes.data;
+
+        if (profile.role === "Admin") {
+          router.push("/admin/articles");
+        } else {
+          router.push("/articles");
+        }
       }
     } catch (error) {
       const err = error as { response?: { data?: { message?: string } } };
