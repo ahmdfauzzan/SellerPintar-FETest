@@ -6,7 +6,7 @@ import { usePathname } from "next/navigation";
 import logo from "@/assets/img/logoputih.png";
 import nookies from "nookies";
 import { useState } from "react";
-import { FileText, Tag, LogOut } from "lucide-react"; 
+import { FileText, Tag, LogOut } from "lucide-react";
 
 const Sidebar = () => {
   const pathname = usePathname();
@@ -49,7 +49,7 @@ const Sidebar = () => {
             onClick={() => setShowLogoutConfirm(true)}
             className={`p-2 text-left rounded w-full flex items-center gap-2 ${
               pathname.startsWith("/logout") ? "bg-blue-900" : ""
-            }`}
+            } cursor-pointer`}
           >
             <LogOut className="w-5 h-5" />
             Logout
