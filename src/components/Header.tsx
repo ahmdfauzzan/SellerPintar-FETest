@@ -4,6 +4,7 @@ import logoipsum from "@/assets/img/logoipsum.png";
 import axios from "@/lib/axios";
 import nookies from "nookies";
 import Link from "next/link";
+import { LogOut } from "lucide-react";
 
 interface HeaderProps {
   className?: string;
@@ -43,11 +44,6 @@ const Header: React.FC<HeaderProps> = ({ className }) => {
 
     fetchUserProfile();
   }, []);
-
-  // const handleLogout = () => {
-  //   nookies.destroy(null, "token");
-  //   window.location.href = "/login";
-  // };
 
   return (
     <div className={`w-full ${className}`}>
@@ -110,8 +106,9 @@ const Header: React.FC<HeaderProps> = ({ className }) => {
               </Link>
               <button
                 onClick={() => setShowLogoutConfirm(true)}
-                className="block w-full px-4 py-2 text-red-500 text-left hover:bg-gray-100"
+                className="w-full px-4 py-2 text-red-500 text-left hover:bg-gray-100 flex items-center gap-2"
               >
+                <LogOut className="w-5 h-5" />
                 Logout
               </button>
             </div>

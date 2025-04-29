@@ -6,7 +6,7 @@ import { usePathname } from "next/navigation";
 import logo from "@/assets/img/logoputih.png";
 import nookies from "nookies";
 import { useState } from "react";
-import { FileText, Tag, LogOut } from "lucide-react"; // Import ikon dari lucide-react
+import { FileText, Tag, LogOut } from "lucide-react"; 
 
 const Sidebar = () => {
   const pathname = usePathname();
