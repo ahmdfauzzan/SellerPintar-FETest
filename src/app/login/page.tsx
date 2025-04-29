@@ -31,6 +31,7 @@ export default function LoginPage() {
 
   const router = useRouter();
   const [showPassword, setShowPassword] = useState(false);
+  const [loginError, setLoginError] = useState<string | null>(null);
 
   const onSubmit = async (data: FormValues) => {
     try {
@@ -50,11 +51,14 @@ export default function LoginPage() {
         }
       }
     } catch (error) {
-      const err = error as { response?: { data?: { message?: string } } };
+      const err = error as {
+        response?: { data?: { message?: string; error?: string } };
+      };
       const message =
         err.response?.data?.message ||
+        err.response?.data?.error ||
         "Gagal login. Periksa kembali akun Anda.";
-      alert(message);
+      setLoginError(message);
     }
   };
 
@@ -101,6 +105,12 @@ export default function LoginPage() {
               </p>
             )}
           </div>
+
+          {loginError && (
+            <div className="text-sm text-red-500 bg-red-100 border border-red-300 rounded p-2">
+              {loginError}
+            </div>
+          )}
 
           <button
             type="submit"
