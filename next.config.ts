@@ -1,9 +1,15 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   images: {
-    domains: [
-      "s3.sellerpintar.com",
-      "gwbdrcbuwabtfbsegmej.supabase.co",
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "s3.sellerpintar.com",
+      },
+      {
+        protocol: "https",
+        hostname: "gwbdrcbuwabtfbsegmej.supabase.co",
+      },
     ],
   },
 };
