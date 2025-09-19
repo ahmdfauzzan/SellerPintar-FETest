@@ -20,12 +20,12 @@ Proyek ini adalah hasil pengerjaan **Tugas Pengujian Frontend** untuk seleksi po
 ### 1. Clone repository
 
 ```bash
-git clone https://github.com/ahmdfauzzan/ArticlesApp-Next.git
+git clone https://github.com/ahmdfauzzan/SellerPintar-FETest.git
 ```
 
 ### 2. Masuk ke direktori
 
-cd testND
+cd artikeltest
 
 ### 3. Install dependencies
 
