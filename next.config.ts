@@ -2,7 +2,8 @@
 const nextConfig = {
   images: {
     domains: [
-      "nkihbopqxauxphmaqvey.supabase.co",
+      "s3.sellerpintar.com",
+      "gwbdrcbuwabtfbsegmej.supabase.co",
     ],
   },
 };
