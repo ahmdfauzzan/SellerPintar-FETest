@@ -5,6 +5,9 @@ import axios from "@/lib/axios";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { useRouter } from "next/navigation";
+import { useFavoriteStore } from "@/store/favoriteStore";
+import Link from "next/link";
+import Image from "next/image";
 
 interface Profile {
   username: string;
@@ -17,6 +20,8 @@ export default function ProfilePage() {
   const [profile, setProfile] = useState<Profile | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const router = useRouter();
+
+  const { favorites } = useFavoriteStore();
 
   useEffect(() => {
     const fetchProfile = async () => {
@@ -37,8 +42,8 @@ export default function ProfilePage() {
     <div className="flex flex-col min-h-screen">
       <Header className="bg-transparent z-10 border-b-gray-500 border-b-2" />
 
-      <div className="flex-grow flex items-center justify-center bg-gray-50 py-16">
-        <div className="w-full max-w-md px-6 py-8 bg-white shadow-lg rounded-lg text-center">
+      <div className="flex-grow flex flex-col items-center bg-gray-50 py-16">
+        <div className="w-full max-w-md px-6 py-8 bg-white shadow-lg rounded-lg text-center mb-10">
           {loading ? (
             <div className="text-center text-lg text-gray-600">Loading...</div>
           ) : (
@@ -78,6 +83,43 @@ export default function ProfilePage() {
                 Back to home
               </button>
             </>
+          )}
+        </div>
+
+        {/* Favorite Articles */}
+        <div className="w-full max-w-3xl bg-white shadow-lg rounded-lg p-6">
+          <h2 className="text-lg font-semibold mb-4">My Favorite Articles</h2>
+          {favorites.length > 0 ? (
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {favorites.map((article) => (
+                <Link key={article.id} href={`/articles/${article.id}`}>
+                  <div className="border rounded-lg overflow-hidden shadow hover:shadow-lg transition cursor-pointer h-full flex flex-col">
+                    <div className="relative w-full aspect-[4/3] bg-gray-100">
+                      {article.imageUrl ? (
+                        <Image
+                          src={article.imageUrl}
+                          alt={article.title}
+                          fill
+                          className="object-cover"
+                        />
+                      ) : (
+                        <div className="flex items-center justify-center w-full h-full text-gray-500 text-sm">
+                          No Image
+                        </div>
+                      )}
+                    </div>
+                    <div className="p-4 flex flex-col flex-1">
+                      <h3 className="font-bold text-lg">{article.title}</h3>
+                      <p className="text-sm text-gray-500">
+                        {article.category.name} • By {article.user.username}
+                      </p>
+                    </div>
+                  </div>
+                </Link>
+              ))}
+            </div>
+          ) : (
+            <p className="text-gray-500">No favorite articles yet.</p>
           )}
         </div>
       </div>

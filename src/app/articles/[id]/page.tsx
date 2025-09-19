@@ -7,6 +7,7 @@ import Footer from "@/components/Footer";
 import Header from "@/components/Header";
 import Image from "next/image";
 import Link from "next/link";
+import { useFavoriteStore } from "@/store/favoriteStore";
 
 interface Article {
   id: string;
@@ -28,6 +29,13 @@ export default function ArticleDetailPage() {
   const [article, setArticle] = useState<Article | null>(null);
   const [otherArticles, setOtherArticles] = useState<Article[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
+
+  const { favorites, addFavorite, removeFavorite, loadFromStorage } =
+    useFavoriteStore();
+
+  useEffect(() => {
+    loadFromStorage(); // 🔥 load favorites dari localStorage pas pertama render
+  }, [loadFromStorage]);
 
   useEffect(() => {
     const loadData = async () => {
@@ -66,6 +74,16 @@ export default function ArticleDetailPage() {
     });
   };
 
+  const isFavorite = favorites.some((fav) => fav.id === article.id);
+
+  const handleFavorite = () => {
+    if (isFavorite) {
+      removeFavorite(article.id);
+    } else {
+      addFavorite(article);
+    }
+  };
+
   return (
     <div className="flex flex-col min-h-screen">
       <Header className="border-b-gray-500 border-b-2" />
@@ -91,6 +109,18 @@ export default function ArticleDetailPage() {
           )}
 
           <div className="text-lg leading-8 space-y-6">{article.content}</div>
+
+          {/* 🔥 Tombol Favorite */}
+          <button
+            onClick={handleFavorite}
+            className={`mt-6 px-4 py-2 rounded font-semibold transition ${
+              isFavorite
+                ? "bg-red-500 text-white hover:bg-red-600"
+                : "bg-gray-200 hover:bg-gray-300"
+            }`}
+          >
+            {isFavorite ? "Remove from Favorites ❤️" : "Add to Favorites 🤍"}
+          </button>
         </div>
 
         {/* Other Articles */}
