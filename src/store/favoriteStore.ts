@@ -39,8 +39,7 @@ export const useFavoriteStore = create<FavoriteState>((set) => ({
   loadFromStorage: () => {
     if (typeof window !== "undefined") {
       const stored = localStorage.getItem("favorites");
-      return { favorites: stored ? JSON.parse(stored) : [] };
+      set({ favorites: stored ? JSON.parse(stored) : [] });
     }
-    return { favorites: [] };
   },
 }));
